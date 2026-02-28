@@ -10,9 +10,16 @@ function App() {
   const [theme, setTheme] = useState("dark")
   const [loadingState, setLoadingState] = useState(false)
 
-  const searchAnime = (e) => {
+  const searchAnime = async (e) => {
     e.preventDefault()
-    console.log("searching for:", keyword)
+    setLoadingState(true)
+
+    const response = await fetch(
+      `https://api.jikan.moe/v4/anime?q=${keyword}&type=${animeType}&min_score=${minScore}&limit=20`
+    )
+    const animeData = await response.json()
+    setResults(animeData.data)
+    setLoadingState(false)
   }
 
   return (
