@@ -68,6 +68,10 @@ function App() {
           min="1"
           max="10"
         />
+        <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
+          <option value="score">Sort by Rating</option>
+          <option value="default">Relevance</option>
+        </select>
         <button type="submit">Search</button>
       </form>
       {loadingState && <p>Searching...</p>}
