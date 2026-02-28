@@ -22,6 +22,11 @@ function App() {
     setLoadingState(false)
   }
 
+  const sortedAnime = [...results].sort((a, b) => {
+    if (sortType === "score") return b.score - a.score
+    return 0
+  })
+
   return (
     <div className="container">
       <h1>Anime Search</h1>
@@ -68,7 +73,7 @@ function App() {
       {loadingState && <p>Searching...</p>}
 
       <div className="results">
-        {results.map((anime) => (
+        {sortedAnime.map((anime) => (
           <div className="card" key={anime.mal_id}>
             <img src={anime.images.jpg.image_url} alt={anime.title} />
             <h2>{anime.title}</h2>
