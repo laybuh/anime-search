@@ -15,7 +15,7 @@ function App() {
     setLoadingState(true)
 
     const response = await fetch(
-      `https://api.jikan.moe/v4/anime?q=${keyword}&type=${animeType}&min_score=${minScore}&limit=20`
+      `https://api.jikan.moe/v4/anime?q=${keyword}&type=${animeType}&min_score=${minScore}&genres=${genre}&limit=20`
     )
     const animeData = await response.json()
     setResults(animeData.data)
@@ -32,8 +32,52 @@ function App() {
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
         />
+        <select value={animeType} onChange={(e) => setAnimeType(e.target.value)}>
+          <option value="">Type</option>
+          <option value="tv">TV</option>
+          <option value="movie">Movie</option>
+          <option value="ova">OVA</option>
+          <option value="special">Special</option>
+          <option value="ona">ONA</option>
+        </select>
+
+        <select value={genre} onChange={(e) => setGenre(e.target.value)}>
+          <option value="">Genre</option>
+          <option value="1">Action</option>
+          <option value="2">Adventure</option>
+          <option value="4">Comedy</option>
+          <option value="8">Drama</option>
+          <option value="10">Fantasy</option>
+          <option value="14">Horror</option>
+          <option value="22">Romance</option>
+          <option value="24">Sci-Fi</option>
+          <option value="36">Slice of Life</option>
+          <option value="37">Supernatural</option>
+        </select>
+
+        <input
+          type="number"
+          placeholder="Minimum Score"
+          value={minScore}
+          onChange={(e) => setMinScore(e.target.value)}
+          min="1"
+          max="10"
+        />
         <button type="submit">Search</button>
       </form>
+      {loadingState && <p>Searching...</p>}
+
+      <div className="results">
+        {results.map((anime) => (
+          <div className="card" key={anime.mal_id}>
+            <img src={anime.images.jpg.image_url} alt={anime.title} />
+            <h2>{anime.title}</h2>
+            <p>Score: {anime.score}</p>
+            <p>Episodes: {anime.episodes}</p>
+            <p>{anime.synopsis}</p>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
