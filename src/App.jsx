@@ -7,7 +7,7 @@ function App() {
   const [animeType, setAnimeType] = useState("")
   const [minScore, setMinScore] = useState("")
   const [results, setResults] = useState([])
-  const [sortType, setSortType] = useState("score")
+  const [sortType, setSortType] = useState("")
   const [theme, setTheme] = useState("dark")
   const [loadingState, setLoadingState] = useState(false)
 
@@ -24,13 +24,14 @@ function App() {
   }
 
   const sortedAnime = [...results].sort((a, b) => {
-    if (sortType === "score") return b.score - a.score
-    return 0
-  })
+  if (sortType === "score") return b.score - a.score
+  if (sortType === "alpha") return a.title.localeCompare(b.title)
+  return 0
+})
 
   return (
     <div className={`container ${theme}`}>
-      <h1>Anime Search</h1>
+      <a href="/"><h1>Anime Search Terminal</h1></a>
       <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
         {theme === "dark" ? "Light Mode" : "Dark Mode"}
       </button>
@@ -73,10 +74,10 @@ function App() {
           max="10"
         />
         <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
-          <option value="">Sort By</option>
-          <option value="default">Relevance</option>
-          <option value="score">Rating</option>
-        </select>
+  <option value="" disabled hidden>Sort By</option>
+  <option value="score">Rating</option>
+  <option value="alpha">A-Z</option>
+</select>
         <button type="submit">Search</button>
       </form>
       {loadingState && <p className="searching">Searching...</p>}
@@ -88,7 +89,7 @@ function App() {
             <h2>{anime.title}</h2>
             <p>Score: {anime.score}</p>
             <p>Episodes: {anime.episodes}</p>
-            <p>{anime.synopsis}</p>
+            <p className="synopsis">{anime.synopsis}</p>
           </div>
         ))}
       </div>

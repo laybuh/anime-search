@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Space+Grotesk:wght@400;500;600&display=swap');
 
 * {
   margin: 0;
@@ -12,20 +13,18 @@ body {
   color: #f0d6ff;
 }
 
-body::before {
+.container.dark::before {
   content: '';
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.08) 0px,
-    rgba(0, 0, 0, 0.08) 1px,
-    transparent 1px,
-    transparent 2px
-  );
+  background: repeating-linear-gradient(0deg,
+      rgba(0, 0, 0, 0.08) 0px,
+      rgba(0, 0, 0, 0.08) 1px,
+      transparent 1px,
+      transparent 2px);
   pointer-events: none;
   z-index: 999;
 }
@@ -39,16 +38,27 @@ body::before {
 }
 
 .container.light {
-  background: #f5e6ff;
-  color: #1a001a;
+  background: #fff;
+  color: #2d0050;
   min-height: 100vh;
   padding: 2rem;
 }
 
 @keyframes flicker {
-  0%, 97%, 100% { opacity: 1; }
-  98% { opacity: 0.92; }
-  99% { opacity: 0.97; }
+
+  0%,
+  97%,
+  100% {
+    opacity: 1;
+  }
+
+  98% {
+    opacity: 0.92;
+  }
+
+  99% {
+    opacity: 0.97;
+  }
 }
 
 h1 {
@@ -60,6 +70,10 @@ h1 {
   margin-bottom: 1.5rem;
   letter-spacing: 4px;
   text-transform: uppercase;
+}
+
+a {
+  text-decoration: none;
 }
 
 form {
@@ -74,15 +88,19 @@ form {
   border-radius: 4px;
 }
 
-input, select {
+input,
+select {
   padding: 0.6rem 1rem;
   border-radius: 2px;
   border: 1px solid #c084fc;
   background: #0d0015;
   color: #f0d6ff;
   font-family: 'Orbitron', sans-serif;
-  font-size: 0.8rem;
   outline: none;
+}
+
+input[type="number"] {
+  min-width: 200px;
 }
 
 input::placeholder {
@@ -149,7 +167,10 @@ button:hover {
   width: 100%;
   height: 280px;
   object-fit: cover;
-  filter: saturate(1.1) contrast(1.05);
+
+  filter: saturate(0.4) contrast(1.4) brightness(0.85) hue-rotate(5deg);
+  box-shadow: 4px 0 0 rgba(255, 0, 200, 0.6), -4px 0 0 rgba(0, 255, 255, 0.6), 0 0 15px rgba(255, 0, 200, 0.2);
+  outline: 1px solid rgba(0, 255, 255, 0.3);
 }
 
 .card h2 {
@@ -161,11 +182,32 @@ button:hover {
 }
 
 .card p {
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   padding: 0 0.75rem 0.5rem;
-  color: #c084fc;
+  color: #d8b4fe;
   line-height: 1.5;
-  font-family: 'Courier New', monospace;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.card .synopsis {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(13, 0, 21, 0.97);
+  color: #e9d5ff;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding: 1rem;
+  overflow-y: scroll;
+  z-index: 100;
+}
+
+.card:hover .synopsis {
+  display: block;
 }
 
 p.searching {
@@ -177,6 +219,77 @@ p.searching {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.container.light h1 {
+  background: linear-gradient(90deg, #be185d, #7e22ce, #6d28d9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.container.light form {
+  background: #fff;
+  border-color: #9333ea;
+  border-top-color: #db2777;
+}
+
+.container.light input,
+.container.light select {
+  background: #fff;
+  color: #2d0050;
+  border-color: #9333ea;
+}
+
+.container.light input::placeholder {
+  color: #9333ea;
+}
+
+.container.light select option {
+  background: #fff;
+  color: #2d0050;
+}
+
+.container.light button {
+  border-color: #be185d;
+  color: #be185d;
+  background: transparent;
+}
+
+.container.light button:hover {
+  background: #be185d;
+  color: #fff;
+}
+
+.container.light .card {
+  background: #fff;
+  border-color: #9333ea;
+  border-top-color: #db2777;
+}
+
+.container.light .card h2 {
+  color: #6b21a8;
+}
+
+.container.light .card p {
+  color: #1a001a;
+}
+
+.container.light .card .synopsis {
+  background: rgba(255, 255, 255, 0.97);
+  color: #1a001a;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.container.light input[type="number"]::placeholder {
+  color: #1a001a;
 }
