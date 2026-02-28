@@ -28,8 +28,11 @@ function App() {
   })
 
   return (
-    <div className="container">
+    <div className={`container ${theme}`}>
       <h1>Anime Search</h1>
+      <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+        {theme === "dark" ? "Light Mode" : "Dark Mode"}
+      </button>
       <form onSubmit={searchAnime}>
         <input
           type="text"
@@ -69,8 +72,9 @@ function App() {
           max="10"
         />
         <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
-          <option value="score">Sort by Rating</option>
+          <option value="">Sort By</option>
           <option value="default">Relevance</option>
+          <option value="score">Rating</option>
         </select>
         <button type="submit">Search</button>
       </form>
