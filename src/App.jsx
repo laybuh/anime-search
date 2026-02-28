@@ -78,7 +78,7 @@ function App() {
         </select>
         <button type="submit">Search</button>
       </form>
-      {loadingState && <p>Searching...</p>}
+      {loadingState && <p className="searching">Searching...</p>}
 
       <div className="results">
         {sortedAnime.map((anime) => (
