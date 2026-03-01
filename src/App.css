@@ -293,3 +293,26 @@ p.searching {
 .container.light input[type="number"]::placeholder {
   color: #1a001a;
 }
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  input, select, button {
+    width: 100%;
+  }
+
+  input[type="number"] {
+    min-width: unset;
+  }
+
+  .results {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
