@@ -87,6 +87,10 @@ a {
   text-decoration: none;
 }
 
+.title-link {
+  display: inline-block;
+}
+
 h1 {
   font-family: var(--display);
   font-size: clamp(2.6rem, 7vw, 4.8rem);
