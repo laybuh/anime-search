@@ -50,14 +50,18 @@ function App() {
 
   return (
     <div className={`container ${theme}`}>
-      <header className="topbar">
-        <a href="/" className="brand">
-          <span className="brand-mark">アニメ</span>
-          <span className="brand-name">Anime Search</span>
-        </a>
-        <button className="theme-toggle" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-          {theme === "dark" ? "Light" : "Dark"}
-        </button>
+      <header className="hero">
+        <div className="hero-row">
+          <span className="hero-tag">// anime_search</span>
+          <button className="theme-toggle" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+            {theme === "dark" ? "Light Mode" : "Dark Mode"}
+          </button>
+        </div>
+        <a href="/"><h1>Anime Search Terminal</h1></a>
+        <p className="hero-intro">
+          Welcome to the Anime Search Terminal. Explore thousands of titles by name,
+          genre, type, and score, powered by live MyAnimeList data.
+        </p>
       </header>
 
       <form onSubmit={searchAnime} className="search-panel">
