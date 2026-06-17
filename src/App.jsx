@@ -76,7 +76,7 @@ function App() {
             {theme === "dark" ? "Light Mode" : "Dark Mode"}
           </button>
         </div>
-        <a href="/"><h1>Anime Search Terminal</h1></a>
+        <h1>Anime Search Terminal</h1>
         <p className="hero-intro">
           Welcome to the Anime Search Terminal. Explore thousands of titles by name,
           genre, type, and score, powered by live MyAnimeList data.
