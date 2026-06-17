@@ -19,21 +19,40 @@ function App() {
     setErrorMessage("")
     setHasSearched(true)
 
-    try {
-      const response = await fetch(
-        `https://api.jikan.moe/v4/anime?q=${keyword}&type=${animeType}&min_score=${minScore}&genres=${genre}&limit=20`
-      )
-      const animeData = await response.json()
+    const delay = (ms) => new Promise((r) => setTimeout(r, ms))
 
-      if (!response.ok) {
-        throw new Error(
-          response.status >= 500
-            ? "MyAnimeList is unavailable right now. Try again in a moment."
-            : "Couldn't complete that search. Please try again."
-        )
+    try {
+      const all = []
+      const maxPages = 50
+      let page = 1
+
+      while (page <= maxPages) {
+        let response
+        let animeData
+        try {
+          response = await fetch(
+            `https://api.jikan.moe/v4/anime?q=${keyword}&type=${animeType}&min_score=${minScore}&genres=${genre}&limit=25&page=${page}`
+          )
+          animeData = await response.json()
+        } catch {
+          break
+        }
+
+        if (!response.ok) {
+          if (all.length === 0) {
+            throw new Error("request failed")
+          }
+          break
+        }
+
+        if (Array.isArray(animeData.data)) all.push(...animeData.data)
+        if (!animeData.pagination?.has_next_page) break
+
+        page++
+        await delay(400)
       }
 
-      setResults(Array.isArray(animeData.data) ? animeData.data : [])
+      setResults(all)
     } catch {
       setResults([])
       setErrorMessage("MyAnimeList is unavailable right now. Try again in a moment.")

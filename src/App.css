@@ -274,11 +274,12 @@ select option {
   font-family: var(--mono);
   font-size: 0.72rem;
   font-weight: 500;
-  color: #ffd66e;
-  background: rgba(8, 2, 14, 0.8);
+  color: var(--accent);
+  background: rgba(8, 2, 14, 0.82);
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   border: 1px solid var(--border-strong);
+  box-shadow: 0 0 12px rgba(255, 157, 226, 0.25);
   padding: 0.22rem 0.5rem;
   border-radius: 7px;
 }
@@ -286,11 +287,11 @@ select option {
 .synopsis {
   position: absolute;
   inset: 0;
-  padding: 1rem;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: #e9d5ff;
+  padding: 0.85rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: #d7c2ee;
   background: rgba(7, 2, 12, 0.94);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
@@ -394,8 +395,9 @@ select option {
 }
 
 .container.light .score-badge {
-  color: #b07a00;
+  color: #be185d;
   background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0 12px rgba(190, 24, 93, 0.18);
 }
 
 .container.light .card-body h2 {
