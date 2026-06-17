@@ -72,11 +72,16 @@ function App() {
       <header className="hero">
         <div className="hero-row">
           <span className="hero-tag">// anime_search</span>
-          <button className="theme-toggle" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-            {theme === "dark" ? "Light Mode" : "Dark Mode"}
-          </button>
+          <div className="hero-actions">
+            <button className="refresh-button" onClick={() => window.location.reload()}>
+              Refresh
+            </button>
+            <button className="theme-toggle" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+              {theme === "dark" ? "Light Mode" : "Dark Mode"}
+            </button>
+          </div>
         </div>
-        <a href="/" className="title-link"><h1>Anime Search Terminal</h1></a>
+        <h1>Anime Search Terminal</h1>
         <p className="hero-intro">
           Welcome to the Anime Search Terminal. Explore thousands of titles by name,
           genre, type, and score, powered by live MyAnimeList data.
