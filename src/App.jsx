@@ -10,33 +10,59 @@ function App() {
   const [sortType, setSortType] = useState("")
   const [theme, setTheme] = useState("dark")
   const [loadingState, setLoadingState] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
+  const [hasSearched, setHasSearched] = useState(false)
 
   const searchAnime = async (e) => {
     e.preventDefault()
     setLoadingState(true)
+    setErrorMessage("")
+    setHasSearched(true)
 
-    const response = await fetch(
-      `https://api.jikan.moe/v4/anime?q=${keyword}&type=${animeType}&min_score=${minScore}&genres=${genre}&limit=20`
-    )
-    const animeData = await response.json()
-    setResults(animeData.data)
-    setLoadingState(false)
+    try {
+      const response = await fetch(
+        `https://api.jikan.moe/v4/anime?q=${keyword}&type=${animeType}&min_score=${minScore}&genres=${genre}&limit=20`
+      )
+      const animeData = await response.json()
+
+      if (!response.ok) {
+        throw new Error(
+          response.status >= 500
+            ? "MyAnimeList is unavailable right now. Try again in a moment."
+            : "Couldn't complete that search. Please try again."
+        )
+      }
+
+      setResults(Array.isArray(animeData.data) ? animeData.data : [])
+    } catch {
+      setResults([])
+      setErrorMessage("MyAnimeList is unavailable right now. Try again in a moment.")
+    } finally {
+      setLoadingState(false)
+    }
   }
 
   const sortedAnime = [...results].sort((a, b) => {
-  if (sortType === "score") return b.score - a.score
-  if (sortType === "alpha") return a.title.localeCompare(b.title)
-  return 0
-})
+    if (sortType === "score") return (b.score ?? 0) - (a.score ?? 0)
+    if (sortType === "alpha") return (a.title || "").localeCompare(b.title || "")
+    return 0
+  })
 
   return (
     <div className={`container ${theme}`}>
-      <a href="/"><h1>Anime Search Terminal</h1></a>
-      <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-        {theme === "dark" ? "Light Mode" : "Dark Mode"}
-      </button>
-      <form onSubmit={searchAnime}>
+      <header className="topbar">
+        <a href="/" className="brand">
+          <span className="brand-mark">アニメ</span>
+          <span className="brand-name">Anime Search</span>
+        </a>
+        <button className="theme-toggle" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+          {theme === "dark" ? "Light" : "Dark"}
+        </button>
+      </header>
+
+      <form onSubmit={searchAnime} className="search-panel">
         <input
+          className="search-input"
           type="text"
           placeholder="Search anime..."
           value={keyword}
@@ -67,29 +93,48 @@ function App() {
 
         <input
           type="number"
-          placeholder="Minimum Score"
+          placeholder="Min score"
           value={minScore}
           onChange={(e) => setMinScore(e.target.value)}
           min="1"
           max="10"
         />
         <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
-  <option value="" disabled hidden>Sort By</option>
-  <option value="score">Rating</option>
-  <option value="alpha">A-Z</option>
-</select>
-        <button type="submit">Search</button>
+          <option value="" disabled hidden>Sort by</option>
+          <option value="score">Rating</option>
+          <option value="alpha">A-Z</option>
+        </select>
+        <button type="submit" className="search-button">Search</button>
       </form>
-      {loadingState && <p className="searching">Searching...</p>}
+
+      {loadingState && <p className="status status-loading">Searching…</p>}
+      {!loadingState && errorMessage && <p className="status status-error">{errorMessage}</p>}
+      {!loadingState && !errorMessage && hasSearched && sortedAnime.length === 0 && (
+        <p className="status">No results found. Try a different search.</p>
+      )}
+      {!loadingState && !errorMessage && sortedAnime.length > 0 && (
+        <p className="status">{sortedAnime.length} result{sortedAnime.length !== 1 ? "s" : ""}</p>
+      )}
 
       <div className="results">
         {sortedAnime.map((anime) => (
           <div className="card" key={anime.mal_id}>
-            <img src={anime.images.jpg.image_url} alt={anime.title} />
-            <h2>{anime.title}</h2>
-            <p>Score: {anime.score}</p>
-            <p>Episodes: {anime.episodes}</p>
-            <p className="synopsis">{anime.synopsis}</p>
+            <div className="poster">
+              {anime.images?.jpg?.image_url && (
+                <img src={anime.images.jpg.image_url} alt={anime.title || "Anime poster"} />
+              )}
+              {anime.score != null && (
+                <span className="score-badge">★ {anime.score}</span>
+              )}
+              <p className="synopsis">{anime.synopsis || "No synopsis available."}</p>
+            </div>
+            <div className="card-body">
+              <h2>{anime.title || "Untitled"}</h2>
+              <div className="meta">
+                <span>{anime.type || "—"}</span>
+                <span>{anime.episodes ? `${anime.episodes} eps` : "—"}</span>
+              </div>
+            </div>
           </div>
         ))}
       </div>
